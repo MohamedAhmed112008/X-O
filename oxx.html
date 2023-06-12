@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <title>X and O Game</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: auto;
+        }
+        
+        td {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--main-font-color);
+            text-align: center;
+            font-size: 30px;
+            cursor: pointer;
+            margin: 20px;
+            color: var(--main-font-color);
+            font-weight: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>X and O Game</h1>
+    <table>
+        <tr>
+            <td id="00"></td>
+            <td id="01"></td>
+            <td id="02"></td>
+        </tr>
+        <tr>
+            <td id="10"></td>
+            <td id="11"></td>
+            <td id="12"></td>
+        </tr>
+        <tr>
+            <td id="20"></td>
+            <td id="21"></td>
+            <td id="22"></td>
+        </tr>
+    </table>
+    <br>
+    <button onclick="reset()">Reset</button>
+    <script>
+        var player = "X";
+        var moves = 0;
+        var board = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
+        ];
+
+        function play(id) {
+            var cell = document.getElementById(id);
+            if (cell.innerHTML !== "") {
+                return;
+            }
+            cell.innerHTML = player;
+            board[id[0]][id[1]] = player;
+            moves++;
+            if (checkWin()) {
+                alert(player + " wins!");
+                reset();
+            } else if (moves === 9) {
+                alert("Tie game!");
+                reset();
+            } else {
+                player = player === "X" ? "O" : "X";
+            }
+        }
+
+        function checkWin() {
+            if (board[0][0] !== "" && board[0][0] === board[0][1] && board[0][0] === board[0][2]) {
+                return true;
+            } else if (board[1][0] !== "" && board[1][0] === board[1][1] && board[1][0] === board[1][2]) {
+                return true;
+            } else if (board[2][0] !== "" && board[2][0] === board[2][1] && board[2][0] === board[2][2]) {
+                return true;
+            } else if (board[0][0] !== "" && board[0][0] === board[1][0] && board[0][0] === board[2][0]) {
+                return true;
+            } else if (board[0][1] !== "" && board[0][1] === board[1][1] && board[0][1] === board[2][1]) {
+                return true;
+            } else if (board[0][2] !== "" && board[0][2] === board[1][2] && board[0][2] === board[2][2]) {
+                return true;
+            } else if (board[0][0] !== "" && board[0][0] === board[1][1] && board[0][0] === board[2][2]) {
+                return true;
+            } else if (board[0][2] !== "" && board[0][2] === board[1][1] && board[0][2] === board[2][0]) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function reset() {
+            player = "X";
+            moves = 0;
+            board = [
+                ["", "", ""],
+                ["", "", ""],
+                ["", "", ""]
+            ];
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    document.getElementById(i.toString() + j.toString()).innerHTML = "";
+                }
+            }
+        }
+
+        document.querySelectorAll("td").forEach(cell => {
+            cell.addEventListener("click", () => {
+                play(cell.id);
+            });
+        });
+    </script>
+</body>
+
+</html>
